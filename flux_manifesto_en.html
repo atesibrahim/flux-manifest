@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The FLUX Manifesto — A Post-Agile Framework</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0e0e0e;
+      --ink2: #3a3a3a;
+      --ink3: #7a7a7a;
+      --ink4: #b0b0b0;
+      --paper: #f5f2ec;
+      --paper2: #ede9e1;
+      --paper3: #e3dfd6;
+      --accent: #c8441a;
+      --accent2: #1a4fc8;
+      --accent3: #1a9c5b;
+      --rule: rgba(14, 14, 14, 0.12);
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Instrument Sans', Helvetica, sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+
+    body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 40px 80px;
+    }
+
+    /* COVER */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px 0;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--rule) 1px, transparent 1px),
+        linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.5;
+    }
+
+    .cover-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .cover h1 {
+      font-family: var(--serif);
+      font-size: clamp(64px, 10vw, 120px);
+      line-height: 0.9;
+      letter-spacing: -3px;
+      color: var(--ink);
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .cover h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .cover-sub {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--ink2);
+      max-width: 560px;
+      position: relative;
+      border-left: 3px solid var(--accent);
+      padding-left: 20px;
+      margin-bottom: 48px;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 40px;
+      position: relative;
+      border-top: 1px solid var(--rule);
+      padding-top: 24px;
+    }
+
+    .cover-meta-item .label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink4);
+      margin-bottom: 4px;
+    }
+
+    .cover-meta-item .val {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink4);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -1px;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+
+    h3 {
+      font-family: var(--serif);
+      font-size: 24px;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--ink2);
+      margin-bottom: 20px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* DECLARATION */
+    .declaration {
+      font-family: var(--serif);
+      font-size: clamp(22px, 3vw, 32px);
+      line-height: 1.4;
+      color: var(--ink);
+      font-style: italic;
+      border-left: 4px solid var(--accent);
+      padding: 24px 32px;
+      background: var(--paper2);
+      margin: 40px 0;
+    }
+
+    /* VALUES GRID */
+    .values-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin: 40px 0;
+      background: var(--rule);
+    }
+
+    .value-card {
+      background: var(--paper);
+      padding: 32px;
+    }
+
+    .value-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .value-card h3 {
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+    }
+
+    .value-card p {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    /* PRINCIPLES */
+    .principles-list {
+      counter-reset: principle;
+      margin: 32px 0;
+    }
+
+    .principle {
+      counter-increment: principle;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: start;
+    }
+
+    .principle::before {
+      content: counter(principle, decimal-leading-zero);
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink4);
+      padding-top: 2px;
+    }
+
+    .principle p {
+      font-size: 15px;
+      margin-bottom: 0;
+    }
+
+    /* PILLARS */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--rule);
+      margin: 40px 0;
+    }
+
+    .pillar {
+      background: var(--paper);
+      padding: 32px 28px;
+    }
+
+    .pillar-num {
+      font-family: var(--mono);
+      font-size: 48px;
+      font-weight: 500;
+      color: var(--paper3);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .pillar h3 {
+      font-family: var(--sans);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .pillar p {
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .pillar-detail {
+      background: var(--paper2);
+      border-left: 3px solid var(--accent);
+      padding: 24px 28px;
+      margin-top: 2px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--ink2);
+    }
+
+    /* VS TABLE */
+    .vs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 40px 0;
+      font-size: 14px;
+    }
+
+    .vs-table thead tr {
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .vs-table thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink3);
+      font-weight: 500;
+    }
+
+    .vs-table thead th.col-new {
+      color: var(--accent2);
+    }
+
+    .vs-table tbody tr {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .vs-table tbody tr:hover {
+      background: var(--paper2);
+    }
+
+    .vs-table tbody td {
+      padding: 14px 16px;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .vs-table tbody td:first-child {
+      color: var(--ink3);
+    }
+
+    .vs-table tbody td.label-col {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--ink4);
+      width: 120px;
+    }
+
+    .vs-table tbody td.new-col {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* PIPELINE */
+    .pipeline {
+      margin: 40px 0;
+    }
+
+    .pipe-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2px;
+      margin-bottom: 2px;
+      background: var(--rule);
+    }
+
+    .pipe-stage {
+      background: var(--ink);
+      padding: 20px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .pipe-stage .stage-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--ink4);
+      margin-bottom: 4px;
+    }
+
+    .pipe-stage .stage-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .pipe-content {
+      background: var(--paper);
+      padding: 20px 24px;
+    }
+
+    .pipe-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 3px 8px;
+      margin-bottom: 8px;
+    }
+
+    .badge-ai {
+      background: #ddeeff;
+      color: var(--accent2);
+    }
+
+    .badge-human {
+      background: var(--paper3);
+      color: var(--ink3);
+    }
+
+    .pipe-content p {
+      font-size: 13px;
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    /* ADOPTION */
+    .phases {
+      margin: 40px 0;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0;
+      margin-bottom: 2px;
+      background: var(--rule);
+    }
+
+    .phase-num {
+      background: var(--paper2);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 28px;
+      font-family: var(--serif);
+      font-size: 36px;
+      font-style: italic;
+      color: var(--ink4);
+    }
+
+    .phase-body {
+      background: var(--paper);
+      padding: 28px 32px;
+    }
+
+    .phase-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .phase-body h3 {
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .phase-body p {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .checklist {
+      list-style: none;
+      margin: 0;
+    }
+
+    .checklist li {
+      font-size: 13px;
+      color: var(--ink2);
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+      border-bottom: 1px solid var(--rule);
+      line-height: 1.5;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    /* RHYTHMS */
+    .rhythms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--rule);
+      margin: 40px 0;
+    }
+
+    .rhythm-card {
+      background: var(--paper);
+      padding: 28px 28px;
+    }
+
+    .rhythm-was {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink4);
+      margin-bottom: 4px;
+      text-decoration: line-through;
+    }
+
+    .rhythm-card h3 {
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .rhythm-card p {
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    /* ROLES */
+    .roles-list {
+      margin: 32px 0;
+    }
+
+    .role-row {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr;
+      gap: 0;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .role-row .old {
+      color: var(--ink3);
+      text-decoration: line-through;
+    }
+
+    .role-row .arrow {
+      text-align: center;
+      color: var(--accent);
+      font-size: 18px;
+    }
+
+    .role-row .new {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* RESISTANCE */
+    .resistance {
+      margin: 40px 0;
+    }
+
+    .resist-item {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .resist-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      white-space: nowrap;
+      height: fit-content;
+    }
+
+    .tag-red {
+      background: #fde8e8;
+      color: #8b1a1a;
+    }
+
+    .tag-amber {
+      background: #fdf2d8;
+      color: #7a4e0a;
+    }
+
+    .tag-green {
+      background: #e8f5ec;
+      color: #1a5c32;
+    }
+
+    .resist-q {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ink);
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .resist-a {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--ink2);
+      margin-bottom: 0;
+    }
+
+    /* METRICS */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--rule);
+      margin: 40px 0;
+    }
+
+    .metric-card {
+      background: var(--paper);
+      padding: 28px;
+    }
+
+    .metric-card .m-num {
+      font-family: var(--serif);
+      font-size: 48px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .metric-card h3 {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .metric-card p {
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    /* CLOSING */
+    .closing {
+      text-align: center;
+      padding: 80px 0 40px;
+    }
+
+    .closing h2 {
+      font-family: var(--serif);
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    .closing p {
+      max-width: 520px;
+      margin: 0 auto 40px;
+      font-size: 17px;
+    }
+
+    .sig-line {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink4);
+      border-top: 1px solid var(--rule);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* LOOP DIAGRAM */
+    .loop-diagram {
+      background: var(--paper2);
+      padding: 40px;
+      margin: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .loop-nodes {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .loop-node {
+      background: var(--ink);
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .loop-node.purple {
+      background: #4a3faa;
+    }
+
+    .loop-node.teal {
+      background: #0f6e56;
+    }
+
+    .loop-node.amber {
+      background: #854f0b;
+    }
+
+    .loop-node.coral {
+      background: #993c1d;
+    }
+
+    .loop-node.gray {
+      background: #5f5e5a;
+    }
+
+    .loop-arrow {
+      color: var(--ink4);
+      font-size: 18px;
+      padding: 0 4px;
+    }
+
+    .loop-return {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--ink4);
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    /* CALLOUT BOX */
+    .callout {
+      background: var(--ink);
+      color: #fff;
+      padding: 32px 36px;
+      margin: 40px 0;
+    }
+
+    .callout p {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    .callout strong {
+      color: #fff;
+    }
+
+    @media print {
+      body {
+        padding: 0 30px;
+      }
+
+      .cover {
+        min-height: auto;
+        padding: 60px 0;
+      }
+
+      section {
+        padding: 48px 0;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-grid"></div>
+    <div class="cover-tag">Post-Agile Framework · v1.0 · 2025 · Ibrahim Ates</div>
+    <h1>The <em>FLUX</em><br>Manifesto</h1>
+    <p style="font-size:13px; color:var(--ink3); margin-bottom:24px; font-family:var(--sans);">An original concept by
+      <strong style="color:var(--ink2);">Ibrahim Ates</strong>
+    </p>
+    <p class="cover-sub">A revolutionary methodology for human-AI teams who ship outcomes, not tasks — built for the age
+      of intelligence augmentation.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="label">Author</div>
+        <div class="val">Ibrahim Ates</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Status</div>
+        <div class="val">Living Document</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Replaces</div>
+        <div class="val">Agile / Scrum / Kanban</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="label">Core concept</div>
+        <div class="val">Signal over ceremony</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART I: THE MANIFESTO -->
+  <section>
+    <div class="section-eyebrow">Part I</div>
+    <h2>Why Agile is Over</h2>
+
+    <p>Agile was a masterpiece of its era. It solved a real problem: how do teams of humans coordinate, communicate, and
+      avoid building the wrong thing? Every ceremony — the standup, the sprint, the retrospective — was engineered to
+      reduce coordination friction between people.</p>
+
+    <p>But the AI era has changed the fundamental equation. <strong>Execution is no longer the bottleneck. Coordination
+        cost has collapsed.</strong> A single person with the right AI context can do in an afternoon what a four-person
+      team took two sprints to complete.</p>
+
+    <p>When execution becomes cheap and coordination becomes near-free, the bottleneck shifts entirely: to
+      <strong>judgment</strong>. And no sprint ceremony, no velocity chart, no burndown was ever designed to optimize
+      judgment.
+    </p>
+
+    <div class="declaration">
+      "We are uncovering better ways of creating outcomes by embracing emergence, amplifying human judgment, and
+      treating AI as a co-creator — not a tool."
+    </div>
+
+    <p>Agile optimized for <em>predictable iteration</em>. The AI era demands <em>continuous emergence</em>. These are
+      not compatible philosophies. You cannot retrofit FLUX thinking into a sprint board. The structure has to change.
+    </p>
+  </section>
+
+  <!-- PART II: FOUR VALUES -->
+  <section>
+    <div class="section-eyebrow">Part II — Core Values</div>
+    <h2>Four Values Over Everything</h2>
+
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-num">01</div>
+        <h3>Signal over ceremony</h3>
+        <p>We replace rituals with real feedback. No meeting exists without a decision that changes something. If a
+          rhythm doesn't produce a signal, it dissolves.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">02</div>
+        <h3>Attractors over backlogs</h3>
+        <p>We define magnetic outcomes, not task lists. Work is pulled toward what matters, not pushed through a queue.
+          An Attractor is a desired state of the world — vivid, specific, alive.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">03</div>
+        <h3>Lenses over roles</h3>
+        <p>We rotate perspective, not permission. A human with an AI lens can hold multiple disciplines simultaneously.
+          Roles create silos. Lenses create insight.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">04</div>
+        <h3>Emergence over estimation</h3>
+        <p>We stop predicting complexity and start sensing momentum. Velocity is measured in outcomes — did the world
+          change? — not story points.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART III: TWELVE PRINCIPLES -->
+  <section>
+    <div class="section-eyebrow">Part III — Principles</div>
+    <h2>Twelve Principles</h2>
+
+    <div class="principles-list">
+      <div class="principle">
+        <p>Our highest priority is <strong>outcome signal</strong> — evidence that the world changed, not that code
+          shipped.</p>
+      </div>
+      <div class="principle">
+        <p>Welcome changing context. AI makes late pivots <strong>nearly free</strong>. The ability to respond to change
+          is a structural advantage, not a disruption.</p>
+      </div>
+      <div class="principle">
+        <p>Deliver <strong>working intelligence</strong>, not working software. The two are no longer the same.</p>
+      </div>
+      <div class="principle">
+        <p>Humans and AI collaborate continuously throughout every Pulse — <strong>neither is the bottleneck</strong>.
+        </p>
+      </div>
+      <div class="principle">
+        <p>Build around motivated humans. Give them context and autonomy, then trust them. <strong>Judgment cannot be
+            managed. It must be unleashed.</strong></p>
+      </div>
+      <div class="principle">
+        <p>Face-to-face meaning is the most efficient signal. Standups are replaced by <strong>Pulse Checks</strong> —
+          async first, sync only on blockers.</p>
+      </div>
+      <div class="principle">
+        <p>Working outcomes are the primary measure of progress. Did the user experience change? Did the metric move?
+          <strong>These questions replace velocity.</strong>
+        </p>
+      </div>
+      <div class="principle">
+        <p>FLUX processes are designed to be <strong>self-dissolving</strong>. When a process no longer adds signal, any
+          team member can kill it — without asking permission.</p>
+      </div>
+      <div class="principle">
+        <p>Continuous attention to quality and <strong>strategic clarity</strong> enhances emergence. Speed without
+          direction is just noise.</p>
+      </div>
+      <div class="principle">
+        <p>Simplicity — the art of maximizing the work <strong>not done</strong> — is essential. AI generates volume
+          easily. Judgment decides what matters.</p>
+      </div>
+      <div class="principle">
+        <p>The best architectures, requirements, and designs emerge from <strong>human-AI co-creation</strong>. Neither
+          alone produces the best result.</p>
+      </div>
+      <div class="principle">
+        <p>At regular intervals, the team reflects on how to become <strong>more signal-dense</strong> — not just
+          faster, but more accurate about what matters.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART IV: THREE PILLARS -->
+  <section>
+    <div class="section-eyebrow">Part IV — The Model</div>
+    <h2>Three Pillars of FLUX</h2>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <h3>Pulses</h3>
+        <p>Dynamic, signal-driven cycles that replace fixed sprints. They contract or expand based on what's happening —
+          not what the calendar says.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <h3>Lenses</h3>
+        <p>Rotating human perspectives that replace rigid roles. Any team member can hold any Lens. Lenses combine,
+          rotate, and dissolve. They never become silos.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <h3>Attractors</h3>
+        <p>Magnetic outcome definitions that replace backlogs. A desired state of the world that pulls work toward it —
+          not a list of tasks to be checked off.</p>
+      </div>
+    </div>
+
+    <div class="pillar-detail">
+      <strong>On Pulses:</strong> A Pulse is not a sprint with a new name. A sprint has fixed duration and fixed scope —
+      it optimizes for predictability. A Pulse contracts and expands based on signal strength. High signal triggers a
+      short Pulse (hours or a day). Building momentum allows a long Pulse (up to two weeks). The question at every Pulse
+      boundary is not "did we complete the sprint?" but <strong>"did the world change?"</strong>
+      <br><br>
+      <strong>On Attractors:</strong> "Users can complete checkout in under 90 seconds without needing support" is an
+      Attractor. "Implement checkout v2" is a backlog item. The difference is <strong>magnetic pull versus mechanical
+        duty</strong>. One inspires judgment. The other coordinates labor.
+      <br><br>
+      <strong>On Lenses:</strong> With AI amplification, one person can simultaneously hold the Technical Lens and the
+      User Lens. A developer who can see through the product lens, a designer who can read the technical lens — this is
+      the native capability of the AI-augmented human. Don't suppress it with rigid role definitions.
+    </div>
+
+    <h3 style="margin-top: 48px; margin-bottom: 20px;">The FLUX loop</h3>
+
+    <div class="loop-diagram">
+      <div class="loop-nodes">
+        <div class="loop-node purple">Attractor</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node teal">Pulse</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node amber">Lenses</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node coral">Signal</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node gray">Reflection</div>
+      </div>
+      <div class="loop-return">↩ Attractor evolves or sharpens based on signal — then the loop begins again</div>
+    </div>
+  </section>
+
+  <!-- PART V: VS AGILE -->
+  <section>
+    <div class="section-eyebrow">Part V — Contrast</div>
+    <h2>FLUX vs Agile</h2>
+
+    <table class="vs-table">
+      <thead>
+        <tr>
+          <th class="label-col">Dimension</th>
+          <th>Agile / Scrum</th>
+          <th class="col-new">FLUX</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-col">Cycle</td>
+          <td>Fixed sprints (2 weeks)</td>
+          <td class="new-col">Dynamic Pulses (hours to weeks)</td>
+        </tr>
+        <tr>
+          <td class="label-col">Planning</td>
+          <td>Backlog of tasks, estimated</td>
+          <td class="new-col">Attractors — magnetic outcome states</td>
+        </tr>
+        <tr>
+          <td class="label-col">Velocity</td>
+          <td>Story points per sprint</td>
+          <td class="new-col">Signal density — did reality change?</td>
+        </tr>
+        <tr>
+          <td class="label-col">Roles</td>
+          <td>PO, Developer, Scrum Master</td>
+          <td class="new-col">Lenses — rotate per context</td>
+        </tr>
+        <tr>
+          <td class="label-col">Daily sync</td>
+          <td>Mandatory standup</td>
+          <td class="new-col">Async Pulse Check — sync on blockers only</td>
+        </tr>
+        <tr>
+          <td class="label-col">Estimation</td>
+          <td>Required before work begins</td>
+          <td class="new-col">Optional — emergence is trusted</td>
+        </tr>
+        <tr>
+          <td class="label-col">Unit of work</td>
+          <td>Human labor (hours, points)</td>
+          <td class="new-col">Human judgment + AI execution</td>
+        </tr>
+        <tr>
+          <td class="label-col">Process</td>
+          <td>Ceremonies are fixed and recurring</td>
+          <td class="new-col">Rhythms self-dissolve when signal drops</td>
+        </tr>
+        <tr>
+          <td class="label-col">Retrospective</td>
+          <td>End of every sprint</td>
+          <td class="new-col">Signal Audit — triggered by surprise</td>
+        </tr>
+        <tr>
+          <td class="label-col">AI</td>
+          <td>A tool someone on the team uses</td>
+          <td class="new-col">Structural co-creator wired into the pipeline</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- PART VI: AI PIPELINE -->
+  <section>
+    <div class="section-eyebrow">Part VI — AI Integration</div>
+    <h2>The AI Delivery Pipeline</h2>
+
+    <p>This is what makes FLUX structurally faster — not the philosophy, but AI wired directly into every stage of
+      delivery. Human judgment at entry and exit. AI execution in between. <strong>This pipeline is not optional. It is
+        the methodology.</strong></p>
+
+    <div class="pipeline">
+      <div class="pipe-row">
+        <div class="pipe-stage">
+          <div class="stage-num">Stage 01</div>
+          <div class="stage-name">Attractor definition</div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-badge badge-human">Human primary</div>
+          <p>Human defines the desired world-state. AI immediately analyses it: "What's ambiguous? What risks are
+            invisible? What similar Attractors have failed?" Returns a gap report before a single line of code is
+            written.</p>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-stage">
+          <div class="stage-num">Stage 02</div>
+          <div class="stage-name">Architecture</div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-badge badge-ai">AI-augmented</div>
+          <p>Human holds the Technical Lens. AI generates architecture options, identifies existing patterns in the
+            codebase, flags constraint violations. Human selects and annotates the decision — not the document.</p>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-stage">
+          <div class="stage-num">Stage 03</div>
+          <div class="stage-name">Generation</div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-badge badge-ai">AI primary</div>
+          <p>AI generates implementation from the annotated architecture + team context file. Human reviews for
+            judgment, not syntax. The question is "does this match the Attractor?" — not "is this code correct?"</p>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-stage">
+          <div class="stage-num">Stage 04</div>
+          <div class="stage-name">Review</div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-badge badge-ai">AI-augmented</div>
+          <p>AI runs first-pass review: security, performance, N+1 patterns, convention violations, test coverage gaps.
+            Human reviews AI's review. PR is blocked until both layers clear. Human time on review drops by ~70%.</p>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-stage">
+          <div class="stage-num">Stage 05</div>
+          <div class="stage-name">Testing</div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-badge badge-ai">AI primary</div>
+          <p>Human defines test intent. AI generates the full test matrix — happy paths, edge cases, failure modes,
+            concurrent load patterns. Human approves, not authors. Coverage becomes a floor, not a target.</p>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-stage">
+          <div class="stage-num">Stage 06</div>
+          <div class="stage-name">Signal check</div>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-badge badge-human">Human primary</div>
+          <p>After deployment, human asks: "Did the world change in the way the Attractor described?" This is not a bug
+            check. It's a reality check. If signal is weak, the Attractor updates immediately — not at the next sprint
+            review.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>The Context File</strong> is the secret weapon of FLUX. A living document fed into every AI session:
+        your stack, your conventions, your past decisions, your current Attractors, your architectural constraints.
+        Without it, AI gives generic output. With it, AI gives <em>your team's</em> output — just faster. The Context
+        File is what makes AI a structural teammate rather than a tool someone on the team occasionally uses.</p>
+    </div>
+  </section>
+
+  <!-- PART VII: RHYTHMS -->
+  <section>
+    <div class="section-eyebrow">Part VII — Rhythms</div>
+    <h2>Rhythms Replace Ceremonies</h2>
+
+    <p>FLUX replaces fixed ceremonies with signal-triggered rhythms. No rhythm exists unless it produces a decision.
+      Every rhythm has an exit condition — when it stops generating signal, it self-dissolves. This is not optional: a
+      team that keeps running a rhythm after it stops producing signal is practicing old methodology with new names.</p>
+
+    <div class="rhythms-grid">
+      <div class="rhythm-card">
+        <div class="rhythm-was">Was: Daily Standup</div>
+        <h3>Pulse Check</h3>
+        <p>Async-first. A brief written or voice update: "What signal did I generate? What's blocking signal?" Sync only
+          when a blocker requires human coordination. Default: no meeting.</p>
+      </div>
+      <div class="rhythm-card">
+        <div class="rhythm-was">Was: Sprint Planning</div>
+        <h3>Attractor Sharpening</h3>
+        <p>Triggered by signal shift — not the calendar. When an Attractor becomes fuzzy, or context changes the desired
+          world-state, this session resharpens it. Runs for 30–60 minutes, produces one clearer Attractor.</p>
+      </div>
+      <div class="rhythm-card">
+        <div class="rhythm-was">Was: Retrospective</div>
+        <h3>Signal Audit</h3>
+        <p>Triggered by surprise, not the end of a sprint. Questions: Did the world change? What were we wrong about?
+          What would have gotten us there faster? Produces changes to the pipeline, not feelings.</p>
+      </div>
+      <div class="rhythm-card">
+        <div class="rhythm-was">Was: Sprint Review</div>
+        <h3>Emergence Show</h3>
+        <p>Show what changed in reality, not what shipped in code. A live demonstration of the outcome delta — how did
+          the world change between this Pulse and the last? Stakeholders see outcomes, not features.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom: 20px;">Roles become Lenses</h3>
+
+    <div class="roles-list">
+      <div class="role-row">
+        <div class="old">Product Owner</div>
+        <div class="arrow">→</div>
+        <div class="new">Attractor Keeper — owns outcome clarity, not the backlog. Rewrites Attractors when signal
+          demands it.</div>
+      </div>
+      <div class="role-row">
+        <div class="old">Scrum Master</div>
+        <div class="arrow">→</div>
+        <div class="new">Signal Steward — removes noise, not impediments. Detects when a rhythm stops generating signal.
+        </div>
+      </div>
+      <div class="role-row">
+        <div class="old">Developer</div>
+        <div class="arrow">→</div>
+        <div class="new">Lens Holder — brings a perspective, not a job title. Can rotate lenses as context demands.
+        </div>
+      </div>
+      <div class="role-row">
+        <div class="old">Team</div>
+        <div class="arrow">→</div>
+        <div class="new">Emergence Cell — a small group where any member can hold any lens. Optimized for judgment, not
+          specialization.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART VIII: ADOPTION -->
+  <section>
+    <div class="section-eyebrow">Part VIII — Adoption</div>
+    <h2>How to Adopt FLUX</h2>
+
+    <p>Every previous methodology change failed because it was a behavioral change without a structural change. FLUX
+      adoption is different: <strong>when AI is embedded in the pipeline, you physically cannot go back to the old
+        rhythm without removing tools.</strong> The structure enforces the behavior. That's the key insight.</p>
+
+    <p>FLUX adoption is itself run as a FLUX process — no big-bang rollout. Each phase is a Pulse. You feel the signal
+      before moving forward.</p>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <div class="phase-body">
+          <div class="phase-tag">Week 1 · Days 1–5</div>
+          <h3>Shock the system — make them feel the speed</h3>
+          <p>The goal of week one is not to teach FLUX — it's to make Scrum feel slow by comparison. Pick one real
+            feature. Run it through a FLUX Pulse with full AI augmentation. Show the team that what used to take two
+            sprints took two days. Don't explain the methodology — show the result.</p>
+          <ul class="checklist">
+            <li>Pick one real, mid-complexity feature — not a toy example</li>
+            <li>Write an Attractor for it (desired world-state, not task list)</li>
+            <li>Run a single AI-augmented Pulse: define → generate → review → ship</li>
+            <li>Measure time-to-production vs your last sprint average</li>
+            <li>Share the delta with the team — no lecture, just the number</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <div class="phase-body">
+          <div class="phase-tag">Week 2–3 · Days 6–21</div>
+          <h3>Language shift — rename with meaning, not cosmetics</h3>
+          <p>Language shapes cognition. When a developer says "backlog" they unconsciously think queue, debt,
+            obligation. When they say "Attractor" they think pull, direction, magnetism. Introduce the vocabulary — but
+            only paired with a behavior change that makes it real. Never rename without rewiring.</p>
+          <ul class="checklist">
+            <li>Hold one Attractor Sharpening session — retire the backlog in that meeting</li>
+            <li>Replace standup with async Pulse Check (voice memo or written signal update)</li>
+            <li>Assign Lenses for the week — rotate them the following week</li>
+            <li>Do not estimate story points for AI-assisted tasks — track outcomes instead</li>
+            <li>Run first Signal Audit: what surprised us? What did AI get wrong?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">3</div>
+        <div class="phase-body">
+          <div class="phase-tag">Week 3–6 · Days 22–42</div>
+          <h3>Wire the AI layer — embed, don't bolt on</h3>
+          <p>This is the phase most teams skip — and it's why they don't actually go faster. AI has to be embedded in
+            the pipeline, not bolted on at the edges. By the end of this phase, no Pulse should begin without an
+            AI-assisted Attractor analysis, and no PR should merge without an AI review layer.</p>
+          <ul class="checklist">
+            <li>Set up AI-assisted Attractor analysis — feed context, get risk + gap signals</li>
+            <li>Integrate AI code review into your PR pipeline (not optional, not async)</li>
+            <li>Use AI for test generation — human writes intent, AI covers the matrix</li>
+            <li>Create the team Context File — architecture, conventions, decisions — fed to every AI session</li>
+            <li>Measure: what % of cycle time is now human-only? Target: under 30%</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">4</div>
+        <div class="phase-body">
+          <div class="phase-tag">Week 6+ · Day 43 onward</div>
+          <h3>Full emergence — the team runs FLUX without thinking about it</h3>
+          <p>You know FLUX is working when the team stops asking "when is the next sprint?" and starts asking "what's
+            the signal?" You know it's fully adopted when a Pulse that isn't adding value gets killed mid-stream —
+            without asking permission. Self-dissolution of process is the final proof of adoption.</p>
+          <ul class="checklist">
+            <li>Team sets their own Pulse length autonomously — no approval needed</li>
+            <li>Attractors are updated in real-time as signal shifts — not quarterly OKRs</li>
+            <li>At least one rhythm has been dissolved because it stopped adding signal</li>
+            <li>Context File is maintained by the team without prompting</li>
+            <li>Time-to-production is measured in hours for standard features, not sprints</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART IX: RESISTANCE MAP -->
+  <section>
+    <div class="section-eyebrow">Part IX — Handling Resistance</div>
+    <h2>The Honest Answers</h2>
+
+    <p>Every team will push back. Here are the real objections — and the FLUX responses that don't sound like a
+      consultant's slide.</p>
+
+    <div class="resistance">
+      <div class="resist-item">
+        <div>
+          <p class="resist-q">"We need predictability for stakeholders. We can't just say 'it'll be done when it's
+            done.'"</p>
+          <p class="resist-a">FLUX doesn't remove predictability — it shifts what you predict. Instead of predicting
+            task completion, you predict <strong>signal milestones</strong>: "By Thursday you'll see the checkout flow
+            working end-to-end in staging." Stakeholders actually prefer this — they care about outcomes, not story
+            points.</p>
+        </div>
+        <span class="resist-tag tag-amber">Planning</span>
+      </div>
+
+      <div class="resist-item">
+        <div>
+          <p class="resist-q">"How do we handle dependencies across teams that are still running Scrum?"</p>
+          <p class="resist-a">You run a thin interface layer: your Attractor has a dependency section. You translate it
+            into sprint-compatible requests for dependent teams. FLUX is internally dynamic, externally compatible.
+            You're not asking the world to change — just your team's internal flow.</p>
+        </div>
+        <span class="resist-tag tag-amber">Org design</span>
+      </div>
+
+      <div class="resist-item">
+        <div>
+          <p class="resist-q">"My developers don't trust AI output. They'll rewrite everything anyway."</p>
+          <p class="resist-a">This is valid — and it's a Context File problem, not an AI problem. When AI output matches
+            your codebase conventions perfectly, trust builds fast. Start with test generation and documentation, where
+            the cost of AI error is low. Let trust compound before putting AI in the critical path.</p>
+        </div>
+        <span class="resist-tag tag-red">Culture</span>
+      </div>
+
+      <div class="resist-item">
+        <div>
+          <p class="resist-q">"The Scrum Master will feel their role is being eliminated."</p>
+          <p class="resist-a">It's being elevated. A Signal Steward does something far more valuable than a Scrum Master
+            — they detect noise in the system before it becomes a crisis. Reframe: "Your job is no longer to run
+            meetings. It's to be the team's early warning system." Most Scrum Masters prefer this once they live it.</p>
+        </div>
+        <span class="resist-tag tag-red">People</span>
+      </div>
+
+      <div class="resist-item">
+        <div>
+          <p class="resist-q">"We tried changing our process before and it always drifted back."</p>
+          <p class="resist-a">Every previous methodology change failed because it was behavioral without being
+            structural. FLUX is structural: when AI is embedded in the pipeline, you physically cannot go back without
+            removing tools. The structure enforces the behavior. That's the difference.</p>
+        </div>
+        <span class="resist-tag tag-green">Change</span>
+      </div>
+
+      <div class="resist-item">
+        <div>
+          <p class="resist-q">"How do we measure team performance without velocity and burndown?"</p>
+          <p class="resist-a">Three FLUX metrics replace velocity: <strong>Pulse-to-Signal rate</strong> (how many
+            Pulses produced real-world change), <strong>Attractor fidelity</strong> (did the outcome match the
+            Attractor?), and <strong>Cycle compression</strong> (time-to-production vs baseline). All three are more
+            meaningful than story points and harder to game.</p>
+        </div>
+        <span class="resist-tag tag-amber">Metrics</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART X: METRICS -->
+  <section>
+    <div class="section-eyebrow">Part X — Measurement</div>
+    <h2>Three Metrics that Matter</h2>
+
+    <p>These replace velocity, burndown, and sprint completion rate. They are harder to game and more honest about
+      whether the team is creating real value.</p>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="m-num">01</div>
+        <h3>Pulse-to-Signal rate</h3>
+        <p>What percentage of Pulses produced a measurable change in the real world? High rate = the team is working on
+          the right things. Low rate = Attractors are fuzzy or execution is decoupled from outcomes.</p>
+      </div>
+      <div class="metric-card">
+        <div class="m-num">02</div>
+        <h3>Attractor fidelity</h3>
+        <p>After delivery, did the world look like the Attractor described? High fidelity = the team can translate
+          vision into reality accurately. Low fidelity = Attractors are too vague or the pipeline has drift.</p>
+      </div>
+      <div class="metric-card">
+        <div class="m-num">03</div>
+        <h3>Cycle compression</h3>
+        <p>Time-to-production today versus your baseline before FLUX. This is the visceral proof. When standard features
+          go from 2-sprint cycles to 2-day cycles, the methodology speaks for itself.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <h2>The question that Changes Everything</h2>
+    <p>Stop asking your team "did we complete the sprint?" Start asking them one question at every Pulse boundary:</p>
+    <div class="declaration" style="text-align: left; max-width: 540px; margin: 0 auto 40px;">"Did the world change?"
+    </div>
+    <p>When that question drives your team's rhythm — when every ceremony, every Pulse, every Attractor is oriented
+      around that single question — you are practicing FLUX.</p>
+    <p>The era of coordinating human labor is over. The era of amplifying human judgment has begun.</p>
+    <div class="sig-line">
+      <span>FLUX Manifesto · v1.0 · 2025</span>
+      <span style="color:var(--accent); font-weight:600;">Ibrahim Ates</span>
+      <span>Living document</span>
+    </div>
+  </section>
+
+</body>
+
+</html>
