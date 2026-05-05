@@ -105,10 +105,27 @@ This creates durable adoption lock-in, and in this context, that lock-in is bene
 
 ---
 
+## Start FLUX in 15 Minutes
+Use these files to make FLUX operational immediately:
+
+1. Define one Attractor using [playbooks/attractor-template.md](playbooks/attractor-template.md)
+2. Run your first Pulse using [playbooks/pulse-check-template.md](playbooks/pulse-check-template.md)
+3. Audit signal at boundary with [playbooks/signal-audit-template.md](playbooks/signal-audit-template.md)
+4. Track outcomes in [metrics/flux-metrics-tracker.md](metrics/flux-metrics-tracker.md)
+5. Run AI pre-analysis with [ai/attractor-analysis-prompt.md](ai/attractor-analysis-prompt.md)
+6. Capture proof in a case file under [cases/README.md](cases/README.md)
+
+Recommended first run:
+- Pick one small but real production problem.
+- Timebox one Pulse to 1-2 days.
+- Ship only what is needed to test whether the world changed.
+- Score fidelity and compression after deployment.
+
+---
+
 ## 30-Second Explanation
 > Agile was built for a world where humans were the execution bottleneck.  
 > AI removed much of that bottleneck.  
 > So instead of backlogs, sprints, and fixed roles, FLUX uses attractors, pulses, and lenses.  
 > AI does most execution; humans do most judgment.  
 > Features that used to take sprints can now ship in hours.
-
